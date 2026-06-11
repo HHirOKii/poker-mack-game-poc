@@ -145,6 +145,13 @@ export const GaugeLabel = styled.p`
   color: #ffd700;
 `;
 
+export const GaugeDescription = styled.p`
+  margin: -4px 0 14px;
+  color: #e0e0e0;
+  font-size: 0.95em;
+  line-height: 1.5;
+`;
+
 export const GaugeBar = styled.div`
   width: 100%;
   height: 40px;
@@ -160,6 +167,90 @@ export const GaugeFill = styled.div<{ percentage: number }>`
   width: ${(props) => props.percentage}%;
   background: linear-gradient(90deg, #ff6b6b 0%, #ffd700 50%, #4ade80 100%);
   transition: width 0.05s linear;
+`;
+
+export const GaugeMarker = styled.div`
+  position: absolute;
+  top: -6px;
+  width: 3px;
+  height: 52px;
+  background: white;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+`;
+
+export const GaugeScale = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  color: #cbd5e1;
+  font-size: 0.8em;
+`;
+
+export const GaugeValue = styled.p`
+  margin: 12px 0 0;
+  font-size: 1.2em;
+  color: #4ade80;
+  font-weight: bold;
+`;
+
+export const ThrowStance = styled.div`
+  position: relative;
+  width: min(100%, 360px);
+  height: 230px;
+  margin: 10px auto 18px;
+`;
+
+export const ThrowBody = styled.div`
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  width: 88px;
+  height: 118px;
+  transform: translateX(-50%);
+  border-radius: 42px 42px 18px 18px;
+  background: linear-gradient(180deg, #facc15 0%, #b45309 100%);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: -54px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #f8d1a7;
+    border: 3px solid #7c2d12;
+  }
+`;
+
+export const ThrowArm = styled.div`
+  position: absolute;
+  left: 50%;
+  top: 74px;
+  width: 150px;
+  height: 18px;
+  border-radius: 999px;
+  background: #f8d1a7;
+  transform-origin: 8px 50%;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+`;
+
+export const ThrowCue = styled.div`
+  position: absolute;
+  left: 40px;
+  top: 22px;
+  width: 210px;
+  height: 84px;
+  border-top: 3px dashed rgba(255, 215, 0, 0.75);
+  border-radius: 50%;
+  transform: rotate(-16deg);
+`;
+
+export const ThrowHint = styled.p`
+  color: #e0e0e0;
+  font-size: 0.95em;
+  margin: 0 0 18px;
 `;
 
 export const ResultBox = styled.div`

@@ -1,5 +1,5 @@
 import * as S from '../styles/components';
-import type { GameSettings } from '../types/game';
+import type { CardDesign, GameSettings, StageDesign } from '../types/game';
 
 interface TitleScreenProps {
   onStart: () => void;
@@ -37,7 +37,7 @@ export function PrepareScreen({ settings, onSettingsChange, onStart }: PrepareSc
           onChange={(e) =>
             onSettingsChange({
               ...settings,
-              cardDesign: e.target.value as any,
+              cardDesign: e.target.value as CardDesign,
             })
           }
         >
@@ -55,7 +55,7 @@ export function PrepareScreen({ settings, onSettingsChange, onStart }: PrepareSc
           onChange={(e) =>
             onSettingsChange({
               ...settings,
-              stageDesign: e.target.value as any,
+              stageDesign: e.target.value as StageDesign,
             })
           }
         >

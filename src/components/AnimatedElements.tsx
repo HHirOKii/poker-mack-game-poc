@@ -29,6 +29,64 @@ export const CardBackContent = styled.div`
   border: 3px solid gold;
 `;
 
+export const CardTrail = styled(motion.div)`
+  position: absolute;
+  width: 72px;
+  height: 108px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.45);
+  border: 2px solid rgba(255, 215, 0, 0.55);
+  filter: blur(1px);
+  pointer-events: none;
+`;
+
+export const PowerWake = styled(motion.div)`
+  position: absolute;
+  left: 18%;
+  top: 52%;
+  width: 220px;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255, 215, 0, 0), #ffd700, rgba(255, 255, 255, 0));
+  transform-origin: left center;
+  pointer-events: none;
+`;
+
+export const ThrowerMark = styled.div`
+  position: absolute;
+  left: 56px;
+  bottom: 42px;
+  width: 58px;
+  height: 86px;
+  border-radius: 28px 28px 12px 12px;
+  background: linear-gradient(180deg, #facc15 0%, #92400e 100%);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.35);
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: -34px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #f8d1a7;
+    border: 2px solid #7c2d12;
+  }
+`;
+
+export const ThrowerArm = styled.div`
+  position: absolute;
+  right: -42px;
+  top: 20px;
+  width: 78px;
+  height: 12px;
+  border-radius: 999px;
+  background: #f8d1a7;
+  transform: rotate(-24deg);
+  transform-origin: left center;
+`;
+
 export const LandingSpot = styled(motion.div)`
   width: 60px;
   height: 60px;

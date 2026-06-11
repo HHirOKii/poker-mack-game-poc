@@ -10,7 +10,7 @@ interface EnhancedGameScreenProps {
   onThrow: (power: number, angle: number) => void;
 }
 
-export function EnhancedGameScreen({ hand: _hand, onThrow }: EnhancedGameScreenProps) {
+export function EnhancedGameScreen({ hand, onThrow }: EnhancedGameScreenProps) {
   const [step, setStep] = useState<'ready' | 'power' | 'angle'>('ready');
   const [power, setPower] = useState(50);
 
@@ -22,6 +22,30 @@ export function EnhancedGameScreen({ hand: _hand, onThrow }: EnhancedGameScreenP
     hover: {
       y: -10,
       rotate: 5,
+    },
+  };
+
+  const throwingCardVariants: Variants = {
+    ready: {
+      x: [-28, -72, -28],
+      y: [58, 22, 58],
+      rotate: [-18, -44, -18],
+      transition: {
+        duration: 1.25,
+        repeat: Infinity,
+        ease: 'easeInOut',
+      },
+    },
+  };
+
+  const armVariants: Variants = {
+    ready: {
+      rotate: [-22, -55, -22],
+      transition: {
+        duration: 1.25,
+        repeat: Infinity,
+        ease: 'easeInOut',
+      },
     },
   };
 
@@ -64,10 +88,39 @@ export function EnhancedGameScreen({ hand: _hand, onThrow }: EnhancedGameScreenP
             transition={{ type: 'spring', stiffness: 100 }}
             style={{ cursor: 'pointer' }}
           >
-            <S.Card>
-              <S.CardBack>♠♥♦♣</S.CardBack>
-            </S.Card>
+            <S.ThrowStance>
+              <S.ThrowCue />
+              <S.ThrowBody />
+              <S.ThrowArm
+                as={motion.div}
+                variants={armVariants}
+                animate="ready"
+              />
+              <S.Card
+                as={motion.div}
+                variants={throwingCardVariants}
+                animate="ready"
+                style={{
+                  position: 'absolute',
+                  right: 54,
+                  top: 18,
+                  margin: 0,
+                  width: 86,
+                  height: 128,
+                  padding: 7,
+                }}
+              >
+                <S.CardBack>♠♥♦♣</S.CardBack>
+              </S.Card>
+            </S.ThrowStance>
           </motion.div>
+
+          <S.ThrowHint>カードを引いて、手首で弾くタイミングを合わせる</S.ThrowHint>
+          {hand && (
+            <p style={{ color: '#cbd5e1', margin: '0 0 18px' }}>
+              現在の手札: {hand.ranks[0]}{hand.suits[0]} / {hand.ranks[1]}{hand.suits[1]}
+            </p>
+          )}
 
           <motion.div
             initial={{ opacity: 0 }}
@@ -91,10 +144,12 @@ export function EnhancedGameScreen({ hand: _hand, onThrow }: EnhancedGameScreenP
           transition={{ duration: 0.3 }}
         >
           <p style={{ fontSize: '1.1em', marginBottom: '20px' }}>
-            投げる力を選択:
+            パワーゲージを止める:
           </p>
           <GaugeBar
-            label="投げの強さ"
+            label="ためているもの: 投げる力"
+            description="右へ伸びるほどカードを強く弾く。白い目印付近で止めると飛距離を出しやすい。"
+            valueLabel={(value) => `${Math.round(value)}% チャージ`}
             onConfirm={(value: number) => {
               setPower(value);
               setStep('angle');
@@ -110,13 +165,12 @@ export function EnhancedGameScreen({ hand: _hand, onThrow }: EnhancedGameScreenP
           transition={{ duration: 0.3 }}
         >
           <p style={{ fontSize: '1.1em', marginBottom: '20px' }}>
-            ハンドの角度を選択:
-          </p>
-          <p style={{ fontSize: '0.9em', color: '#ffd700', marginBottom: '20px' }}>
-            水平に近いほど成功しやすい
+            リリース角度を止める:
           </p>
           <GaugeBar
-            label="回転角度"
+            label="ためているもの: 手首の起こし角"
+            description="数値が大きいほどカードが立ち、表返りやすい。低めで止めると水平に滑る。"
+            valueLabel={(value) => `${Math.round(value)}°`}
             onConfirm={(angle: number) => {
               onThrow(power, angle);
             }}
