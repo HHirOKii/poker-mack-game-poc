@@ -5,12 +5,23 @@ interface GaugeBarProps {
   label: string;
   description?: string;
   valueLabel?: (value: number) => string;
+  onValueChange?: (value: number) => void;
   onConfirm: (value: number) => void;
 }
 
-export function GaugeBar({ label, description, valueLabel, onConfirm }: GaugeBarProps) {
+export function GaugeBar({
+  label,
+  description,
+  valueLabel,
+  onValueChange,
+  onConfirm,
+}: GaugeBarProps) {
   const [value, setValue] = useState(50);
   const [isIncreasing, setIsIncreasing] = useState(true);
+
+  useEffect(() => {
+    onValueChange?.(value);
+  }, [onValueChange, value]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -35,7 +46,7 @@ export function GaugeBar({ label, description, valueLabel, onConfirm }: GaugeBar
       <S.GaugeLabel>{label}</S.GaugeLabel>
       {description && <S.GaugeDescription>{description}</S.GaugeDescription>}
       <S.GaugeBar>
-        <S.GaugeFill percentage={value} />
+        <S.GaugeFill $percentage={value} />
         <S.GaugeMarker style={{ left: '70%' }} />
       </S.GaugeBar>
       <S.GaugeScale>

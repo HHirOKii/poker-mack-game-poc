@@ -18,8 +18,11 @@ export const AnimatedCard = styled(motion.div)`
 export const CardBackContent = styled.div`
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, #c41e3a 0%, #8b0000 100%);
-  border-radius: 10px;
+  background:
+    linear-gradient(45deg, rgba(255, 255, 255, 0.08) 25%, transparent 25% 50%, rgba(255, 255, 255, 0.08) 50% 75%, transparent 75%),
+    linear-gradient(135deg, #b91c1c 0%, #450a0a 100%);
+  background-size: 18px 18px, auto;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -105,12 +108,17 @@ export const GameFieldContainer = styled.div`
   width: 100%;
   max-width: 800px;
   height: 400px;
-  background: linear-gradient(135deg, #1a5a1a 0%, #0d3d0d 100%);
-  border-radius: 12px;
-  border: 3px solid #d4af37;
+  background:
+    radial-gradient(ellipse at center, rgba(34, 197, 94, 0.18), transparent 58%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 34px),
+    linear-gradient(135deg, #0f513c 0%, #082f2a 100%);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 215, 0, 0.42);
   position: relative;
   overflow: hidden;
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+  box-shadow:
+    inset 0 0 40px rgba(0, 0, 0, 0.42),
+    0 24px 60px rgba(0, 0, 0, 0.32);
   margin: 30px auto;
 `;
 
@@ -124,15 +132,17 @@ export const ParticleEffect = styled(motion.div)`
 `;
 
 export const SuccessMessage = styled(motion.div)`
-  font-size: 2em;
+  font-size: 1.4em;
   color: #4ade80;
   font-weight: bold;
+  letter-spacing: 0.08em;
   text-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
 `;
 
 export const FailureMessage = styled(motion.div)`
-  font-size: 2em;
+  font-size: 1.4em;
   color: #ff6b6b;
   font-weight: bold;
+  letter-spacing: 0.08em;
   text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
 `;

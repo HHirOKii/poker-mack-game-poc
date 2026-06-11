@@ -171,7 +171,7 @@ export function ResultAnimation({ result }: ResultAnimationProps) {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            🎉 成功！
+            THROW MADE
           </A.SuccessMessage>
         ) : (
           <A.FailureMessage
@@ -179,7 +179,7 @@ export function ResultAnimation({ result }: ResultAnimationProps) {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            💔 失敗...
+            CARD FLIPPED
           </A.FailureMessage>
         )}
 
