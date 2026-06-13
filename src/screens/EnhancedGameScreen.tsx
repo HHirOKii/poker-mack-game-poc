@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import type { Variants } from 'framer-motion';
 import * as S from '../styles/components';
 import type { Hand } from '../types/game';
 import { GaugeBar } from '../components/GaugeBar';
@@ -10,91 +9,88 @@ interface EnhancedGameScreenProps {
   onThrow: (power: number, angle: number) => void;
 }
 
-export function EnhancedGameScreen({ hand: _hand, onThrow }: EnhancedGameScreenProps) {
+export function EnhancedGameScreen({ hand, onThrow }: EnhancedGameScreenProps) {
   const [step, setStep] = useState<'ready' | 'power' | 'angle'>('ready');
   const [power, setPower] = useState(50);
+  const [livePower, setLivePower] = useState(50);
+  const [liveAngle, setLiveAngle] = useState(82);
 
-  const cardVariants: Variants = {
-    ready: {
-      y: 0,
-      rotate: 0,
-    },
-    hover: {
-      y: -10,
-      rotate: 5,
-    },
-  };
-
-  const messageVariants: Variants = {
-    initial: { opacity: 0, y: -20 },
-    animate: {
-      opacity: 1,
-      y: 0,
-    },
-  };
+  const previewPower = step === 'power' ? livePower : power;
+  const previewAngle = step === 'angle' ? liveAngle : 82;
+  const pullBack = Math.min(82, previewPower * 0.82);
+  const cardRotation = -34 + previewAngle * 0.78;
+  const liftPreview = Math.min(150, previewPower * 1.35 * Math.sin((previewAngle * Math.PI) / 180));
 
   return (
     <S.Screen>
-      <S.Subtitle>ゲーム画面</S.Subtitle>
+      <S.GameHeader>
+        <span>HEIGHT CHALLENGE</span>
+        <strong>どこまで高くマックできるか</strong>
+      </S.GameHeader>
+
+      <S.HeightStage>
+        <S.HeightMarks>
+          <span>12m</span>
+          <span>8m</span>
+          <span>4m</span>
+        </S.HeightMarks>
+        <S.TargetRing>HIGH</S.TargetRing>
+        <S.UnderhandPlayer>
+          <S.PlayerBody />
+          <S.PlayerArm
+            as={motion.div}
+            animate={{ rotate: -18 - pullBack / 4, x: -pullBack / 5 }}
+            transition={{ duration: 0.08 }}
+          />
+          <S.Card
+            as={motion.div}
+            animate={{
+              x: -pullBack * 0.55,
+              y: 70 - liftPreview * 0.4,
+              rotate: cardRotation,
+              scale: 0.72 + previewPower / 360,
+            }}
+            transition={{ duration: 0.08 }}
+            style={{
+              position: 'absolute',
+              left: '54%',
+              bottom: 16,
+              width: 74,
+              height: 112,
+              padding: 6,
+              margin: 0,
+            }}
+          >
+            <S.CardBack>♠♥♦♣</S.CardBack>
+          </S.Card>
+          <S.LiftBeam style={{ height: `${70 + liftPreview}px`, opacity: 0.2 + previewPower / 160 }} />
+        </S.UnderhandPlayer>
+      </S.HeightStage>
+
+      {hand && (
+        <S.HandReadout>
+          捨てる手札: {hand.ranks[0]}{hand.suits[0]} / {hand.ranks[1]}{hand.suits[1]}
+        </S.HandReadout>
+      )}
 
       {step === 'ready' && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-        >
-          <motion.div
-            variants={messageVariants}
-            initial="initial"
-            animate="animate"
-            transition={{
-              duration: 0.5,
-              repeat: Infinity,
-              repeatDelay: 0.3,
-            }}
-            style={{ marginBottom: '20px' }}
-          >
-            <S.Message>フォールドしろ！！</S.Message>
-          </motion.div>
-
-          <motion.div
-            whileHover="hover"
-            variants={cardVariants}
-            initial="ready"
-            transition={{ type: 'spring', stiffness: 100 }}
-            style={{ cursor: 'pointer' }}
-          >
-            <S.Card>
-              <S.CardBack>♠♥♦♣</S.CardBack>
-            </S.Card>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            <S.Button
-              onClick={() => setStep('power')}
-              style={{ fontSize: '1.2em' }}
-            >
-              マックでフォールド！
-            </S.Button>
-          </motion.div>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.25 }}>
+          <S.Message>低く構えて、真上の的を狙え</S.Message>
+          <S.Button onClick={() => setStep('power')} style={{ fontSize: '1.15em' }}>
+            投げる準備
+          </S.Button>
         </motion.div>
       )}
 
       {step === 'power' && (
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <p style={{ fontSize: '1.1em', marginBottom: '20px' }}>
-            投げる力を選択:
-          </p>
+        <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
           <GaugeBar
-            label="投げの強さ"
+            label="リリース速度"
+            description="腕をどれだけ引いて、カードをどれだけ速く弾くか。強すぎると姿勢が崩れる。"
+            marker={82}
+            scaleLabels={['弱い', '伸びる', '強すぎ']}
+            valueLabel={(value) => `${Math.round(value)}% SPEED`}
+            onValueChange={setLivePower}
             onConfirm={(value: number) => {
               setPower(value);
               setStep('angle');
@@ -104,19 +100,14 @@ export function EnhancedGameScreen({ hand: _hand, onThrow }: EnhancedGameScreenP
       )}
 
       {step === 'angle' && (
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <p style={{ fontSize: '1.1em', marginBottom: '20px' }}>
-            ハンドの角度を選択:
-          </p>
-          <p style={{ fontSize: '0.9em', color: '#ffd700', marginBottom: '20px' }}>
-            水平に近いほど成功しやすい
-          </p>
+        <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
           <GaugeBar
-            label="回転角度"
+            label="打ち上げ角"
+            description="真上に近いほど高さが出る。90度を超えるとカードが暴れて失速しやすい。"
+            marker={82}
+            scaleLabels={['低い', '的付近', '立ちすぎ']}
+            valueLabel={(value) => `${Math.round(value)}° LAUNCH`}
+            onValueChange={setLiveAngle}
             onConfirm={(angle: number) => {
               onThrow(power, angle);
             }}

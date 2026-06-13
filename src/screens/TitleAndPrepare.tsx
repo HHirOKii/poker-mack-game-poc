@@ -1,5 +1,5 @@
 import * as S from '../styles/components';
-import type { GameSettings } from '../types/game';
+import type { CardDesign, GameSettings, StageDesign } from '../types/game';
 
 interface TitleScreenProps {
   onStart: () => void;
@@ -10,7 +10,7 @@ export function TitleScreen({ onStart }: TitleScreenProps) {
     <S.Screen>
       <S.Title>THE・マック</S.Title>
       <p style={{ fontSize: '1.2em', marginBottom: '30px' }}>
-        ポーカーのマックで飛距離を競え！
+        ポーカーのマックで高さを競え！
       </p>
       <S.Button onClick={onStart} style={{ fontSize: '1.3em', padding: '20px 40px' }}>
         始める
@@ -37,7 +37,7 @@ export function PrepareScreen({ settings, onSettingsChange, onStart }: PrepareSc
           onChange={(e) =>
             onSettingsChange({
               ...settings,
-              cardDesign: e.target.value as any,
+              cardDesign: e.target.value as CardDesign,
             })
           }
         >
@@ -55,7 +55,7 @@ export function PrepareScreen({ settings, onSettingsChange, onStart }: PrepareSc
           onChange={(e) =>
             onSettingsChange({
               ...settings,
-              stageDesign: e.target.value as any,
+              stageDesign: e.target.value as StageDesign,
             })
           }
         >
