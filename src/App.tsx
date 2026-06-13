@@ -17,16 +17,13 @@ export default function App() {
   const [appScreen, setAppScreen] = useState<AppScreen>('title');
   const [showRanking, setShowRanking] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [showResultModal, setShowResultModal] = useState(false);
 
   const handleThrow = (power: number, angle: number) => {
-    setIsAnimating(true);
     const result = calculateDistance(power, angle);
-
-    setTimeout(() => {
-      game.setCurrentResult(result);
-      setAppScreen('result');
-      setIsAnimating(false);
-    }, 1500);
+    game.setCurrentResult(result);
+    setShowResultModal(false);
+    setIsAnimating(true);
   };
 
   const handleSaveAndShowRanking = (entry: RankingEntry) => {
@@ -36,17 +33,20 @@ export default function App() {
 
   const handlePlayAgain = () => {
     setShowRanking(false);
+    setShowResultModal(false);
     setAppScreen('game');
     game.dealHand();
   };
 
   const handlePrepare = () => {
     setShowRanking(false);
+    setShowResultModal(false);
     setAppScreen('prepare');
   };
 
   const handleTitle = () => {
     setShowRanking(false);
+    setShowResultModal(false);
     setAppScreen('title');
   };
 
@@ -83,15 +83,18 @@ export default function App() {
       {appScreen === 'game' && isAnimating && game.currentResult && (
         <ThrowAnimation
           result={game.currentResult}
-          onAnimationComplete={() => {}}
+          onAnimationComplete={() => {
+            setIsAnimating(false);
+            setShowResultModal(true);
+          }}
         />
       )}
 
-      {appScreen === 'result' && !showRanking && game.currentResult && (
-        <>
-          <ResultAnimation result={game.currentResult} />
-          <S.Screen>
-            <S.ButtonGroup style={{ marginTop: '30px' }}>
+      {appScreen === 'game' && showResultModal && !showRanking && game.currentResult && (
+        <S.ResultModalOverlay>
+          <S.ResultModal>
+            <ResultAnimation result={game.currentResult} />
+            <S.ButtonGroup style={{ marginTop: '22px' }}>
               <S.Button onClick={handlePlayAgain}>もう一度遊ぶ</S.Button>
               <S.Button
                 onClick={() => {
@@ -113,8 +116,8 @@ export default function App() {
                 やめる
               </S.Button>
             </S.ButtonGroup>
-          </S.Screen>
-        </>
+          </S.ResultModal>
+        </S.ResultModalOverlay>
       )}
 
       {showRanking && <RankingScreen onBack={() => setShowRanking(false)} />}
