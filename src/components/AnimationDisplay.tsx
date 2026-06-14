@@ -9,7 +9,7 @@ interface ThrowAnimationProps {
 }
 
 export function ThrowAnimation({ result, onAnimationComplete }: ThrowAnimationProps) {
-  const peakY = -Math.min(300, result.distance * 28);
+  const cameraRise = Math.min(860, result.distance * 72);
   const driftX = (result.angle - 82) * 3.2;
   const maxRotation = 360 + result.power * 5;
 
@@ -20,24 +20,34 @@ export function ThrowAnimation({ result, onAnimationComplete }: ThrowAnimationPr
 
   return (
     <A.GameFieldContainer>
+      <A.RisingWorld
+        initial={{ y: 0 }}
+        animate={{ y: cameraRise }}
+        transition={{ duration: 1.85, ease: 'easeOut' }}
+      >
+        <A.CloudLayer />
+        <A.BuildingLayer />
+        <A.TowerLayer />
+      </A.RisingWorld>
       <A.HeightRuler>
-        <span>12m</span>
-        <span>8m</span>
-        <span>4m</span>
+        <span>東京タワー</span>
+        <span>ビル屋上</span>
+        <span>街灯</span>
       </A.HeightRuler>
-      <A.TargetHalo />
+      <A.PerspectiveTable />
+      <A.TargetHalo>PEAK</A.TargetHalo>
       <A.LauncherBase />
       <A.VerticalTrail
         initial={{ scaleY: 0, opacity: 0 }}
-        animate={{ scaleY: [0, 1, 0.35], opacity: [0, 0.8, 0] }}
-        transition={{ duration: 1.15, ease: 'easeOut' }}
+        animate={{ scaleY: [0, 1.4, 0.35], opacity: [0, 0.85, 0] }}
+        transition={{ duration: 1.35, ease: 'easeOut' }}
       />
 
       <motion.div
         style={{
           position: 'absolute',
           left: '50%',
-          bottom: '34px',
+          bottom: '88px',
           width: 86,
           height: 128,
           padding: 7,
@@ -54,10 +64,10 @@ export function ThrowAnimation({ result, onAnimationComplete }: ThrowAnimationPr
           opacity: 1,
         }}
         animate={{
-          x: [0, -32, driftX * 0.45, driftX],
-          y: [0, -96, peakY, peakY + 68],
+          x: [0, -22, driftX * 0.34, driftX],
+          y: [0, -120, -250, -300],
           rotate: [-30, 18, maxRotation * 0.62, maxRotation],
-          scale: [0.9, 1.08, 0.86, 0.76],
+          scale: [1.08, 0.96, 0.72, 0.56],
           opacity: result.success ? 1 : 0.5,
         }}
         transition={{
@@ -73,7 +83,7 @@ export function ThrowAnimation({ result, onAnimationComplete }: ThrowAnimationPr
       <A.LandingSpot
         style={{
           left: `calc(50% + ${driftX}px)`,
-          bottom: `${Math.min(328, result.distance * 28 + 80)}px`,
+          top: '70px',
           marginLeft: '-30px',
           marginTop: '-30px',
         }}
@@ -91,7 +101,7 @@ export function ThrowAnimation({ result, onAnimationComplete }: ThrowAnimationPr
               key={i}
               style={{
                 left: `calc(50% + ${driftX}px)`,
-                bottom: `${Math.min(328, result.distance * 28 + 80)}px`,
+                top: '96px',
               }}
               initial={{
                 x: 0,

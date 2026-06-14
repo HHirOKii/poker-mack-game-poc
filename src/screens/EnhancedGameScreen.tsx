@@ -18,7 +18,7 @@ export function EnhancedGameScreen({ hand, onThrow }: EnhancedGameScreenProps) {
   const previewPower = step === 'power' ? livePower : power;
   const previewAngle = step === 'angle' ? liveAngle : 82;
   const pullBack = Math.min(82, previewPower * 0.82);
-  const cardRotation = -34 + previewAngle * 0.78;
+  const cardRotation = -18 + previewAngle * 0.55;
   const liftPreview = Math.min(150, previewPower * 1.35 * Math.sin((previewAngle * Math.PI) / 180));
 
   return (
@@ -29,32 +29,37 @@ export function EnhancedGameScreen({ hand, onThrow }: EnhancedGameScreenProps) {
       </S.GameHeader>
 
       <S.HeightStage>
+        <S.PixelSkyline />
+        <S.TablePlane />
+        <S.TableEdge />
         <S.HeightMarks>
           <span>12m</span>
           <span>8m</span>
           <span>4m</span>
         </S.HeightMarks>
         <S.TargetRing>HIGH</S.TargetRing>
+        <S.TargetPlatform />
         <S.UnderhandPlayer>
+          <S.PlayerShadow />
           <S.PlayerBody />
           <S.PlayerArm
             as={motion.div}
-            animate={{ rotate: -18 - pullBack / 4, x: -pullBack / 5 }}
+            animate={{ rotate: 18 - pullBack / 5, x: -pullBack / 7 }}
             transition={{ duration: 0.08 }}
           />
           <S.Card
             as={motion.div}
             animate={{
-              x: -pullBack * 0.55,
-              y: 70 - liftPreview * 0.4,
+              x: 44 - pullBack * 0.25,
+              y: 58 - liftPreview * 0.55,
               rotate: cardRotation,
               scale: 0.72 + previewPower / 360,
             }}
             transition={{ duration: 0.08 }}
             style={{
               position: 'absolute',
-              left: '54%',
-              bottom: 16,
+              left: '58%',
+              bottom: 18,
               width: 74,
               height: 112,
               padding: 6,
@@ -63,7 +68,13 @@ export function EnhancedGameScreen({ hand, onThrow }: EnhancedGameScreenProps) {
           >
             <S.CardBack>♠♥♦♣</S.CardBack>
           </S.Card>
-          <S.LiftBeam style={{ height: `${70 + liftPreview}px`, opacity: 0.2 + previewPower / 160 }} />
+          <S.LiftBeam
+            style={{
+              height: `${70 + liftPreview}px`,
+              opacity: 0.16 + previewPower / 180,
+              transform: `translateX(-50%) rotate(${Math.max(-24, 92 - previewAngle)}deg)`,
+            }}
+          />
         </S.UnderhandPlayer>
       </S.HeightStage>
 
@@ -83,7 +94,7 @@ export function EnhancedGameScreen({ hand, onThrow }: EnhancedGameScreenProps) {
       )}
 
       {step === 'power' && (
-        <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
+        <S.HudPanel as={motion.div} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
           <GaugeBar
             label="リリース速度"
             description="腕をどれだけ引いて、カードをどれだけ速く弾くか。強すぎると姿勢が崩れる。"
@@ -96,11 +107,11 @@ export function EnhancedGameScreen({ hand, onThrow }: EnhancedGameScreenProps) {
               setStep('angle');
             }}
           />
-        </motion.div>
+        </S.HudPanel>
       )}
 
       {step === 'angle' && (
-        <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
+        <S.HudPanel as={motion.div} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
           <GaugeBar
             label="打ち上げ角"
             description="真上に近いほど高さが出る。90度を超えるとカードが暴れて失速しやすい。"
@@ -112,7 +123,7 @@ export function EnhancedGameScreen({ hand, onThrow }: EnhancedGameScreenProps) {
               onThrow(power, angle);
             }}
           />
-        </motion.div>
+        </S.HudPanel>
       )}
     </S.Screen>
   );
