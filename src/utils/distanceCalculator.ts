@@ -1,28 +1,25 @@
 import type { GameResult } from '../types/game';
 
-const MIN_DISTANCE = 1;
-const MAX_DISTANCE = 9;
-const POWER_COEFFICIENT = 0.08;
+const MIN_HEIGHT = 0.8;
+const MAX_HEIGHT = 12;
+const TARGET_ANGLE = 82;
 
 export function calculateDistance(power: number, angle: number): GameResult {
-  // 基本飛距離計算
-  let baseDistance = power * POWER_COEFFICIENT + MIN_DISTANCE;
-  baseDistance = Math.min(baseDistance, MAX_DISTANCE);
+  const launchAngle = Math.max(10, Math.min(95, angle));
+  const verticalLift = Math.sin((launchAngle * Math.PI) / 180);
+  const targetPenalty = Math.abs(launchAngle - TARGET_ANGLE) / TARGET_ANGLE;
+  const overPowerPenalty = Math.max(0, power - 88) * 0.035;
+  const rawHeight = MIN_HEIGHT + power * 0.125 * verticalLift;
+  const finalHeight = Math.max(
+    MIN_HEIGHT,
+    Math.min(MAX_HEIGHT, rawHeight - targetPenalty * 2.2 - overPowerPenalty)
+  );
 
-  // 角度補正
-  let angleCorrection = 1;
-  if (angle > 0) {
-    angleCorrection = Math.cos((angle * Math.PI) / 180);
-  }
-
-  const finalDistance = baseDistance * angleCorrection;
-
-  // 失敗判定: 角度が大きすぎると表になる確率UP
-  const flipProbability = (angle / 90) * 0.7 + (power / 100) * 0.3;
-  const success = Math.random() > flipProbability;
+  const wobbleRisk = targetPenalty * 0.55 + Math.max(0, power - 92) * 0.012;
+  const success = power >= 20 && launchAngle >= 55 && launchAngle <= 94 && Math.random() > wobbleRisk;
 
   const result: GameResult = {
-    distance: Math.round(finalDistance * 100) / 100,
+    distance: Math.round(finalHeight * 100) / 100,
     angle,
     power,
     success,

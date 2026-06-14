@@ -7,7 +7,10 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   font-family: 'Arial', sans-serif;
-  background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+  background:
+    radial-gradient(circle at 50% 8%, rgba(255, 215, 0, 0.18), transparent 26%),
+    radial-gradient(circle at 18% 78%, rgba(220, 38, 38, 0.16), transparent 24%),
+    linear-gradient(135deg, #071923 0%, #111827 58%, #17120f 100%);
   padding: 20px;
   box-sizing: border-box;
 
@@ -22,11 +25,15 @@ export const Container = styled.div`
 
 export const Screen = styled.div`
   width: 100%;
-  max-width: 600px;
-  padding: 40px;
+  max-width: 900px;
+  padding: 28px;
   text-align: center;
   color: white;
   box-sizing: border-box;
+  background: rgba(7, 18, 27, .42);
+  border: 1px solid rgba(255, 215, 0, .14);
+  border-radius: 14px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, .28);
 
   @media (max-width: 768px) {
     padding: 30px;
@@ -51,8 +58,8 @@ export const Subtitle = styled.h2`
 `;
 
 export const Button = styled.button`
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-  color: #000;
+  background: linear-gradient(135deg, #f8c537 0%, #f97316 100%);
+  color: #170f05;
   border: none;
   padding: 15px 30px;
   font-size: 1.1em;
@@ -61,7 +68,7 @@ export const Button = styled.button`
   margin: 10px;
   font-weight: bold;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+  box-shadow: 0 10px 24px rgba(249, 115, 22, .24);
 
   &:hover {
     transform: translateY(-3px);
@@ -97,7 +104,7 @@ export const Card = styled.div<{ rotate?: number }>`
   width: 120px;
   height: 180px;
   background: white;
-  border-radius: 12px;
+  border-radius: 10px;
   padding: 10px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   display: flex;
@@ -112,8 +119,11 @@ export const Card = styled.div<{ rotate?: number }>`
 export const CardBack = styled.div`
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, #c41e3a 0%, #8b0000 100%);
-  border-radius: 10px;
+  background:
+    linear-gradient(45deg, rgba(255, 255, 255, .08) 25%, transparent 25% 50%, rgba(255, 255, 255, .08) 50% 75%, transparent 75%),
+    linear-gradient(135deg, #b91c1c 0%, #450a0a 100%);
+  background-size: 18px 18px, auto;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -136,7 +146,7 @@ export const CardFront = styled.div`
 `;
 
 export const GaugeContainer = styled.div`
-  margin: 30px 0;
+  margin: 24px 0 0;
 `;
 
 export const GaugeLabel = styled.p`
@@ -145,21 +155,387 @@ export const GaugeLabel = styled.p`
   color: #ffd700;
 `;
 
+export const GaugeDescription = styled.p`
+  margin: -4px 0 14px;
+  color: #cbd5e1;
+  font-size: .95em;
+  line-height: 1.5;
+`;
+
 export const GaugeBar = styled.div`
   width: 100%;
-  height: 40px;
-  background: #333;
+  height: 34px;
+  background: rgba(6, 18, 22, .92);
   border-radius: 20px;
   overflow: hidden;
-  border: 2px solid #ffd700;
+  border: 1px solid rgba(255, 215, 0, .65);
   position: relative;
 `;
 
-export const GaugeFill = styled.div<{ percentage: number }>`
+export const GaugeFill = styled.div<{ $percentage: number }>`
   height: 100%;
-  width: ${(props) => props.percentage}%;
-  background: linear-gradient(90deg, #ff6b6b 0%, #ffd700 50%, #4ade80 100%);
+  width: ${(props) => props.$percentage}%;
+  background: linear-gradient(90deg, #ef4444 0%, #f59e0b 45%, #22c55e 100%);
   transition: width 0.05s linear;
+`;
+
+export const GaugeMarker = styled.div`
+  position: absolute;
+  top: -6px;
+  width: 3px;
+  height: 48px;
+  background: white;
+  box-shadow: 0 0 12px rgba(255, 255, 255, .75);
+`;
+
+export const GaugeScale = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  color: #94a3b8;
+  font-size: .78em;
+`;
+
+export const GaugeValue = styled.p`
+  margin: 12px 0 0;
+  font-size: 1.12em;
+  color: #4ade80;
+  font-weight: bold;
+  letter-spacing: .04em;
+`;
+
+export const GameHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: baseline;
+  margin-bottom: 18px;
+  text-align: left;
+
+  span {
+    color: #f97316;
+    font-size: .78em;
+    font-weight: 800;
+    letter-spacing: .12em;
+  }
+
+  strong {
+    color: #f8fafc;
+    font-size: 1.2em;
+  }
+
+  @media (max-width: 560px) {
+    display: block;
+    text-align: center;
+  }
+`;
+
+export const HeightStage = styled.div`
+  position: relative;
+  height: 430px;
+  border-radius: 10px;
+  overflow: hidden;
+  perspective: 760px;
+  perspective-origin: 50% 72%;
+  background:
+    radial-gradient(circle at 50% 10%, rgba(255,255,255,.75), transparent 13%),
+    linear-gradient(180deg, #7dd3fc 0%, #e0f2fe 34%, #fef3c7 68%, #6b3f16 100%);
+  border: 1px solid rgba(255, 215, 0, .34);
+  box-shadow: inset 0 -60px 0 rgba(84, 48, 16, .28), 0 16px 40px rgba(0, 0, 0, .3);
+`;
+
+export const PixelSkyline = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 130px;
+  height: 150px;
+  background:
+    linear-gradient(90deg, transparent 0 6%, rgba(8, 47, 73, .3) 6% 14%, transparent 14% 18%, rgba(8, 47, 73, .22) 18% 26%, transparent 26% 34%, rgba(8, 47, 73, .3) 34% 46%, transparent 46% 55%, rgba(8, 47, 73, .2) 55% 70%, transparent 70% 78%, rgba(8, 47, 73, .28) 78% 90%, transparent 90%);
+  clip-path: polygon(0 55%, 8% 55%, 8% 24%, 16% 24%, 16% 66%, 28% 66%, 28% 38%, 40% 38%, 40% 60%, 53% 60%, 53% 30%, 66% 30%, 66% 68%, 79% 68%, 79% 42%, 91% 42%, 91% 58%, 100% 58%, 100% 100%, 0 100%);
+  pointer-events: none;
+`;
+
+export const TablePlane = styled.div`
+  position: absolute;
+  left: 50%;
+  bottom: -38px;
+  width: 96%;
+  height: 260px;
+  transform: translateX(-50%) rotateX(64deg);
+  transform-origin: bottom center;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.12) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(255,255,255,.09) 1px, transparent 1px),
+    linear-gradient(135deg, #0f6b48 0%, #065f46 100%);
+  background-size: 44px 44px, 44px 44px, auto;
+  border: 8px solid #7c2d12;
+  box-shadow: 0 -16px 34px rgba(0,0,0,.25);
+`;
+
+export const TableEdge = styled.div`
+  position: absolute;
+  left: 3%;
+  right: 3%;
+  bottom: 58px;
+  height: 24px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #92400e, #451a03);
+  box-shadow: 0 12px 18px rgba(0,0,0,.24);
+`;
+
+export const HeightMarks = styled.div`
+  position: absolute;
+  left: 18px;
+  top: 36px;
+  bottom: 96px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: rgba(7, 18, 27, .7);
+  font-size: .76em;
+  font-weight: 800;
+`;
+
+export const TargetRing = styled.div`
+  position: absolute;
+  right: 16%;
+  top: 44px;
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  border: 5px solid #ef4444;
+  background: radial-gradient(circle, #fff 0 18%, #ef4444 18% 31%, #fff 31% 47%, #2563eb 47% 62%, rgba(255,255,255,.72) 62%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111827;
+  font-size: .78em;
+  font-weight: 800;
+  letter-spacing: .08em;
+  box-shadow: 0 10px 0 rgba(0,0,0,.18), 0 0 22px rgba(255, 255, 255, .4);
+`;
+
+export const TargetPlatform = styled.div`
+  position: absolute;
+  right: calc(16% + 44px);
+  top: 148px;
+  width: 16px;
+  height: 110px;
+  background: #7c2d12;
+  border-left: 4px solid rgba(255,255,255,.18);
+  box-shadow: 0 8px 0 rgba(0,0,0,.2);
+`;
+
+export const GroundLine = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 74px;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px),
+    linear-gradient(180deg, #2f7d32 0%, #166534 42%, #7c2d12 42%, #4a1d0b 100%);
+  background-size: 34px 100%, auto;
+  border-top: 4px solid #86efac;
+`;
+
+export const UnderhandPlayer = styled.div`
+  position: absolute;
+  left: 50%;
+  bottom: 72px;
+  width: 320px;
+  height: 230px;
+  transform: translateX(-50%);
+  transform-style: preserve-3d;
+`;
+
+export const PlayerShadow = styled.div`
+  position: absolute;
+  left: 50%;
+  bottom: -14px;
+  width: 210px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .28);
+  transform: translateX(-50%) rotateX(72deg);
+`;
+
+export const PlayerModel = styled.div`
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 170px;
+  height: 214px;
+  transform: translateX(-50%) rotateX(8deg) rotateY(0deg);
+  transform-style: preserve-3d;
+`;
+
+export const ModelTorso = styled.div`
+  position: absolute;
+  left: 50%;
+  bottom: 62px;
+  width: 86px;
+  height: 104px;
+  transform: translateX(-50%) translateZ(20px);
+  border-radius: 28px 28px 16px 16px;
+  background: linear-gradient(90deg, #1d4ed8 0%, #2563eb 48%, #1e40af 100%);
+  box-shadow:
+    inset -18px 0 0 rgba(15, 23, 42, .18),
+    0 18px 24px rgba(0, 0, 0, .24);
+`;
+
+export const ModelHead = styled.div`
+  position: absolute;
+  left: 50%;
+  bottom: 168px;
+  width: 56px;
+  height: 62px;
+  transform: translateX(-50%) translateZ(28px);
+  border-radius: 42% 42% 48% 48%;
+  background: radial-gradient(circle at 62% 32%, #ffe2bd 0 12%, #f8d1a7 13% 66%, #c97946 100%);
+  box-shadow:
+    inset -12px 0 0 rgba(124, 45, 18, .18),
+    0 12px 18px rgba(0, 0, 0, .2);
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    top: -6px;
+    height: 22px;
+    border-radius: 999px 999px 12px 12px;
+    background: #3f1f12;
+  }
+`;
+
+export const ModelShoulder = styled.div`
+  position: absolute;
+  left: 50%;
+  bottom: 144px;
+  width: 126px;
+  height: 26px;
+  transform: translateX(-50%) translateZ(24px);
+  border-radius: 999px;
+  background: linear-gradient(90deg, #1e40af, #3b82f6, #1e3a8a);
+  box-shadow: 0 8px 14px rgba(0,0,0,.22);
+`;
+
+export const ModelArm = styled.div`
+  position: absolute;
+  bottom: 104px;
+  width: 24px;
+  height: 96px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #eab98e, #f8d1a7 55%, #c97946);
+  transform-style: preserve-3d;
+  transform-origin: 50% 12%;
+  box-shadow: 0 9px 12px rgba(0,0,0,.2);
+
+  &.left {
+    left: 24px;
+    transform: translateZ(22px) rotateZ(18deg) rotateX(22deg);
+  }
+
+  &.right {
+    right: 26px;
+    transform: translateZ(34px) rotateZ(-18deg) rotateX(38deg);
+  }
+`;
+
+export const ModelLeg = styled.div`
+  position: absolute;
+  bottom: 8px;
+  width: 30px;
+  height: 82px;
+  border-radius: 999px 999px 12px 12px;
+  background: linear-gradient(90deg, #0f172a, #1f2937 55%, #020617);
+  transform-origin: top center;
+  box-shadow: 0 10px 12px rgba(0,0,0,.22);
+
+  &.left {
+    left: 50px;
+    transform: translateZ(12px) rotateZ(7deg);
+  }
+
+  &.right {
+    right: 50px;
+    transform: translateZ(24px) rotateZ(-7deg);
+  }
+`;
+
+export const PlayerBody = styled.div`
+  position: absolute;
+  left: 78px;
+  bottom: 0;
+  width: 76px;
+  height: 104px;
+  border-radius: 30px 30px 12px 12px;
+  background: linear-gradient(180deg, #2563eb 0%, #1e40af 100%);
+  box-shadow: 8px 0 0 rgba(0,0,0,.12), 0 14px 0 rgba(0, 0, 0, .14);
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 52px;
+    top: -46px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #f8d1a7;
+    border: 3px solid #7c2d12;
+    box-shadow: -9px 9px 0 rgba(0,0,0,.12);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 16px;
+    bottom: -44px;
+    width: 18px;
+    height: 52px;
+    border-radius: 999px;
+    background: #111827;
+    box-shadow: 44px 0 0 #111827;
+  }
+`;
+
+export const PlayerArm = styled.div`
+  position: absolute;
+  left: 112px;
+  bottom: 78px;
+  width: 136px;
+  height: 16px;
+  border-radius: 999px;
+  background: #f8d1a7;
+  transform-origin: 8px 50%;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, .14);
+`;
+
+export const LiftBeam = styled.div`
+  position: absolute;
+  left: 50%;
+  bottom: 98px;
+  width: 9px;
+  transform-origin: bottom center;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255,255,255,0), rgba(239,68,68,.74), rgba(255,255,255,0));
+  pointer-events: none;
+`;
+
+export const HudPanel = styled.div`
+  margin-top: 14px;
+  padding: 14px 16px 16px;
+  border-radius: 10px;
+  background: rgba(2, 6, 23, .58);
+  border: 1px solid rgba(255, 255, 255, .12);
+`;
+
+export const HandReadout = styled.p`
+  margin: 12px 0 4px;
+  color: #cbd5e1;
+  font-size: .92em;
 `;
 
 export const ResultBox = styled.div`

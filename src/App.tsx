@@ -19,14 +19,14 @@ export default function App() {
   const [isAnimating, setIsAnimating] = useState(false);
 
   const handleThrow = (power: number, angle: number) => {
-    setIsAnimating(true);
     const result = calculateDistance(power, angle);
+    game.setCurrentResult(result);
+    setIsAnimating(true);
 
     setTimeout(() => {
-      game.setCurrentResult(result);
       setAppScreen('result');
       setIsAnimating(false);
-    }, 1500);
+    }, 1900);
   };
 
   const handleSaveAndShowRanking = (entry: RankingEntry) => {

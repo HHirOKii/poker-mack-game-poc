@@ -40,15 +40,15 @@ export function ResultScreen({
           <>
             <p style={{ fontSize: '1.2em', color: '#4ade80' }}>成功！</p>
             <S.ResultValue>{result.distance}m</S.ResultValue>
-            <p>投げの強さ: {Math.round(result.power)}</p>
-            <p>角度: {Math.round(result.angle)}°</p>
+            <p>リリース速度: {Math.round(result.power)}%</p>
+            <p>打ち上げ角: {Math.round(result.angle)}°</p>
           </>
         ) : (
           <>
             <p style={{ fontSize: '1.2em', color: '#ff6b6b' }}>失敗...</p>
-            <p>ハンドが表になってしまいました</p>
+            <p>カードが暴れて失速しました</p>
             <p style={{ marginTop: '15px' }}>
-              飛距離は{result.distance}mでした
+              最高到達点は{result.distance}mでした
             </p>
           </>
         )}
@@ -94,7 +94,7 @@ export function RankingScreen({ onBack }: RankingScreenProps) {
             }}
           >
             <p style={{ fontSize: '0.9em', color: '#888', margin: '0 0 5px 0' }}>
-              最高記録
+              最高到達点
             </p>
             <p style={{ fontSize: '2em', color: '#ffd700', margin: '0' }}>
               {topScore}m
