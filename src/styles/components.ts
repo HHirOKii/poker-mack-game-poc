@@ -235,6 +235,8 @@ export const HeightStage = styled.div`
   height: 430px;
   border-radius: 10px;
   overflow: hidden;
+  perspective: 760px;
+  perspective-origin: 50% 72%;
   background:
     radial-gradient(circle at 50% 10%, rgba(255,255,255,.75), transparent 13%),
     linear-gradient(180deg, #7dd3fc 0%, #e0f2fe 34%, #fef3c7 68%, #6b3f16 100%);
@@ -257,10 +259,10 @@ export const PixelSkyline = styled.div`
 export const TablePlane = styled.div`
   position: absolute;
   left: 50%;
-  bottom: -26px;
-  width: 88%;
-  height: 210px;
-  transform: translateX(-50%) perspective(420px) rotateX(58deg);
+  bottom: -38px;
+  width: 96%;
+  height: 260px;
+  transform: translateX(-50%) rotateX(64deg);
   transform-origin: bottom center;
   background:
     linear-gradient(90deg, rgba(255,255,255,.12) 1px, transparent 1px),
@@ -273,10 +275,10 @@ export const TablePlane = styled.div`
 
 export const TableEdge = styled.div`
   position: absolute;
-  left: 7%;
-  right: 7%;
-  bottom: 52px;
-  height: 18px;
+  left: 3%;
+  right: 3%;
+  bottom: 58px;
+  height: 24px;
   border-radius: 999px;
   background: linear-gradient(180deg, #92400e, #451a03);
   box-shadow: 0 12px 18px rgba(0,0,0,.24);
@@ -340,20 +342,127 @@ export const GroundLine = styled.div`
 
 export const UnderhandPlayer = styled.div`
   position: absolute;
-  left: 15%;
-  bottom: 80px;
-  width: 280px;
-  height: 190px;
+  left: 50%;
+  bottom: 72px;
+  width: 320px;
+  height: 230px;
+  transform: translateX(-50%);
+  transform-style: preserve-3d;
 `;
 
 export const PlayerShadow = styled.div`
   position: absolute;
-  left: 16px;
-  bottom: -8px;
-  width: 190px;
-  height: 22px;
+  left: 50%;
+  bottom: -14px;
+  width: 210px;
+  height: 34px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, .22);
+  background: rgba(0, 0, 0, .28);
+  transform: translateX(-50%) rotateX(72deg);
+`;
+
+export const PlayerModel = styled.div`
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 170px;
+  height: 214px;
+  transform: translateX(-50%) rotateX(8deg) rotateY(0deg);
+  transform-style: preserve-3d;
+`;
+
+export const ModelTorso = styled.div`
+  position: absolute;
+  left: 50%;
+  bottom: 62px;
+  width: 86px;
+  height: 104px;
+  transform: translateX(-50%) translateZ(20px);
+  border-radius: 28px 28px 16px 16px;
+  background: linear-gradient(90deg, #1d4ed8 0%, #2563eb 48%, #1e40af 100%);
+  box-shadow:
+    inset -18px 0 0 rgba(15, 23, 42, .18),
+    0 18px 24px rgba(0, 0, 0, .24);
+`;
+
+export const ModelHead = styled.div`
+  position: absolute;
+  left: 50%;
+  bottom: 168px;
+  width: 56px;
+  height: 62px;
+  transform: translateX(-50%) translateZ(28px);
+  border-radius: 42% 42% 48% 48%;
+  background: radial-gradient(circle at 62% 32%, #ffe2bd 0 12%, #f8d1a7 13% 66%, #c97946 100%);
+  box-shadow:
+    inset -12px 0 0 rgba(124, 45, 18, .18),
+    0 12px 18px rgba(0, 0, 0, .2);
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    top: -6px;
+    height: 22px;
+    border-radius: 999px 999px 12px 12px;
+    background: #3f1f12;
+  }
+`;
+
+export const ModelShoulder = styled.div`
+  position: absolute;
+  left: 50%;
+  bottom: 144px;
+  width: 126px;
+  height: 26px;
+  transform: translateX(-50%) translateZ(24px);
+  border-radius: 999px;
+  background: linear-gradient(90deg, #1e40af, #3b82f6, #1e3a8a);
+  box-shadow: 0 8px 14px rgba(0,0,0,.22);
+`;
+
+export const ModelArm = styled.div`
+  position: absolute;
+  bottom: 104px;
+  width: 24px;
+  height: 96px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #eab98e, #f8d1a7 55%, #c97946);
+  transform-style: preserve-3d;
+  transform-origin: 50% 12%;
+  box-shadow: 0 9px 12px rgba(0,0,0,.2);
+
+  &.left {
+    left: 24px;
+    transform: translateZ(22px) rotateZ(18deg) rotateX(22deg);
+  }
+
+  &.right {
+    right: 26px;
+    transform: translateZ(34px) rotateZ(-18deg) rotateX(38deg);
+  }
+`;
+
+export const ModelLeg = styled.div`
+  position: absolute;
+  bottom: 8px;
+  width: 30px;
+  height: 82px;
+  border-radius: 999px 999px 12px 12px;
+  background: linear-gradient(90deg, #0f172a, #1f2937 55%, #020617);
+  transform-origin: top center;
+  box-shadow: 0 10px 12px rgba(0,0,0,.22);
+
+  &.left {
+    left: 50px;
+    transform: translateZ(12px) rotateZ(7deg);
+  }
+
+  &.right {
+    right: 50px;
+    transform: translateZ(24px) rotateZ(-7deg);
+  }
 `;
 
 export const PlayerBody = styled.div`
@@ -406,9 +515,9 @@ export const PlayerArm = styled.div`
 
 export const LiftBeam = styled.div`
   position: absolute;
-  left: 188px;
-  bottom: 58px;
-  width: 7px;
+  left: 50%;
+  bottom: 98px;
+  width: 9px;
   transform-origin: bottom center;
   border-radius: 999px;
   background: linear-gradient(180deg, rgba(255,255,255,0), rgba(239,68,68,.74), rgba(255,255,255,0));

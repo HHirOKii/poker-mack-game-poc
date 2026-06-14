@@ -18,7 +18,7 @@ export function EnhancedGameScreen({ hand, onThrow }: EnhancedGameScreenProps) {
   const previewPower = step === 'power' ? livePower : power;
   const previewAngle = step === 'angle' ? liveAngle : 82;
   const pullBack = Math.min(82, previewPower * 0.82);
-  const cardRotation = -18 + previewAngle * 0.55;
+  const cardRotation = -12 + previewAngle * 0.42;
   const liftPreview = Math.min(150, previewPower * 1.35 * Math.sin((previewAngle * Math.PI) / 180));
 
   return (
@@ -41,25 +41,37 @@ export function EnhancedGameScreen({ hand, onThrow }: EnhancedGameScreenProps) {
         <S.TargetPlatform />
         <S.UnderhandPlayer>
           <S.PlayerShadow />
-          <S.PlayerBody />
-          <S.PlayerArm
-            as={motion.div}
-            animate={{ rotate: 18 - pullBack / 5, x: -pullBack / 7 }}
-            transition={{ duration: 0.08 }}
-          />
+          <S.PlayerModel>
+            <S.ModelLeg className="left" />
+            <S.ModelLeg className="right" />
+            <S.ModelTorso />
+            <S.ModelHead />
+            <S.ModelShoulder />
+            <S.ModelArm className="left" />
+            <S.ModelArm
+              className="right"
+              as={motion.div}
+              animate={{
+                rotateX: 22 + pullBack / 2.8,
+                rotateZ: -18 + (92 - previewAngle) / 5,
+                x: -pullBack / 8,
+              }}
+              transition={{ duration: 0.08 }}
+            />
+          </S.PlayerModel>
           <S.Card
             as={motion.div}
             animate={{
-              x: 44 - pullBack * 0.25,
-              y: 58 - liftPreview * 0.55,
+              x: 84 - pullBack * 0.2,
+              y: 18 - liftPreview * 0.44,
               rotate: cardRotation,
               scale: 0.72 + previewPower / 360,
             }}
             transition={{ duration: 0.08 }}
             style={{
               position: 'absolute',
-              left: '58%',
-              bottom: 18,
+              left: '52%',
+              bottom: 86,
               width: 74,
               height: 112,
               padding: 6,
@@ -72,7 +84,7 @@ export function EnhancedGameScreen({ hand, onThrow }: EnhancedGameScreenProps) {
             style={{
               height: `${70 + liftPreview}px`,
               opacity: 0.16 + previewPower / 180,
-              transform: `translateX(-50%) rotate(${Math.max(-24, 92 - previewAngle)}deg)`,
+              transform: `translateX(-50%) rotate(${Math.max(-18, 90 - previewAngle)}deg)`,
             }}
           />
         </S.UnderhandPlayer>
